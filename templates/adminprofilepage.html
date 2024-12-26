@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Profile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        .profile-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .profile-card {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .profile-card img {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            margin-bottom: 15px;
+        }
+
+        .profile-card h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .profile-card p {
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .profile-card .details {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .details div {
+            margin-bottom: 10px;
+        }
+
+        .details span {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .logout-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .logout-btn:hover {
+            background-color: #0056b3;
+        }
+
+        @media (max-width: 480px) {
+            .profile-card {
+                padding: 15px;
+            }
+
+            .profile-card h1 {
+                font-size: 20px;
+            }
+
+            .logout-btn {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="profile-container">
+        <div class="profile-card">
+            <img src="https://via.placeholder.com/100" alt="Admin Avatar">
+            <br>
+            <h1>{{ username }}</h1>
+            <br>
+            <p>{{ email }}</p>
+            <br>
+            <button><a href="logout" class="logout-btn">Logout</a></button>
+        </div>
+    </div>
+</body>
+</html>
