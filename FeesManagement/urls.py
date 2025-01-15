@@ -27,5 +27,8 @@ urlpatterns = [
     path('delete/<int:delete_id>',views.delete_student),
     path('edit/<int:edit_id>',views.edit_student),
     path('edit/update', views.update_student, name='update'),
-    path('logout/',views.adminlogout)
+    path('viewstudent/<int:view_id>',views.view_student),
+    path('logout/',views.adminlogout),
+    path('feesupdate',views.fees_update),
+    path('editfee/<int:fee_id>',views.student_fee_edit)
 ]

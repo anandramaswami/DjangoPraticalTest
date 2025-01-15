@@ -46,7 +46,7 @@ def adminhome(request):
 
 @login_required
 def studentstable(request):
-    obj = StudentsDataModel.objects.all()
+    data = StudentsDataModel.objects.all()
     obb = StudentsDataModel.objects.count()
     obt = StudentFeesModel.objects.all()
     sum = 0
@@ -57,10 +57,13 @@ def studentstable(request):
     for j in obt:
         rest = rest + j.fee_category.amount - j.amount_paid
 
-    print(obb)
-    print(sum)
-    print(rest)
-    return render(request,"studentspage.html",{"datas" : obj , "count" : obb ,"total" : sum , "remaining" : rest })
+    if request.method=="POST":
+        name = request.POST.get("studentname")
+        data = StudentsDataModel.objects.filter(first_name__icontains=name)
+        
+
+    return render(request,"studentspage.html",{"datas" : data , "count" : obb ,"total" : sum , "remaining" : rest })
+
 
 
 
@@ -113,6 +116,40 @@ def update_student(request):
         obj.save()
         print(obj)
         return redirect('/students')
+    
+
+@login_required
+def view_student(request,view_id):
+    student_viewdata = StudentsDataModel.objects.get(student_id=view_id)
+    student_fee_data = StudentFeesModel.objects.filter(student=student_viewdata)
+    return render(request,"viewstudent.html",{"data" : student_viewdata,"feesdata" : student_fee_data})
+
+
+@login_required
+def fees_update(request):
+    students_fee_data = StudentFeesModel.objects.all()
+    return render(request,"studentfeesupdate.html",{"datas" : students_fee_data})
+
+
+
+
+@login_required
+def student_fee_edit(request,fee_id):
+    students_fee_obj = StudentFeesModel.objects.get(id=fee_id)
+    if request.method == "POST":
+        fee_amount = int(request.POST.get('fee'))
+
+        if fee_amount >= students_fee_obj.remaining_amount() :
+            students_fee_obj.status = "PAID"
+
+        students_fee_obj.amount_paid = students_fee_obj.amount_paid+fee_amount
+        students_fee_obj.save()
+        return redirect('/feesupdate')
+
+
+    return render(request,"feesedit.html",{"data" : students_fee_obj})
+
+
 
 
 

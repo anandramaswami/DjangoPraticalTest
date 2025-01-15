@@ -170,31 +170,6 @@
         .table tbody tr:hover {
             background-color: #f1f1f1;
         }
-        .btn {
-    padding: 6px 12px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.btn.edit {
-    background-color: #00ff2a;
-    color: #fff;
-}
-
-.btn.delete {
-    background-color: #DC3545;
-    color: #fff;
-}
-
-.btn.view {
-    background-color: #d6ed0a;
-    color: #fff;
-}
-
-.btn:hover {
-    opacity: 0.9;
-}
     </style>
 </head>
 
@@ -206,16 +181,19 @@
                 Admin Dashboard
             </div>
             <div class="list-group list-group-flush my-3">
-              <a href="/" class="list-group-item list-group-item-action">
-                <span class="material-icons me-2">dashboard</span>Home</a>
+                <a href="home" class="list-group-item list-group-item-action">
+                    <span class="material-icons me-2">dashboard</span>Home</a>
                 <a href="students" class="list-group-item list-group-item-action">
                     <span class="material-icons me-2">person</span>Students</a>
                 <a href="feescategory" class="list-group-item list-group-item-action">
                     <span class="material-icons me-2">category</span>Fees Categories</a>
+                    <a href="feesupdate" class="list-group-item list-group-item-action">
+                        <span class="material-icons me-2">category</span>Student Fees Update</a>
             </div>
         </div>
-        
+        <!-- /#sidebar-wrapper -->
 
+        <!-- Page Content -->
         <div id="page-content-wrapper">
             <nav class="navbar navbar-expand-lg navbar-light bg-transparent py-4 px-4">
                 <div class="d-flex align-items-center">
@@ -241,48 +219,10 @@
                 </div>
             </nav>
 
-            <!-- Page Content -->
-
-            <div class="container-fluid px-4">
-                <div class="row g-3 my-2">
-                    <div class="col-md-4">
-                        <div class="card-counter primary">
-                            <i class="material-icons">people</i>
-                            <span class="count-numbers">{{count}}</span>
-                            <span class="count-name">Students</span>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="card-counter success">
-                            <i class="material-icons">category</i>
-                            <span class="count-numbers">{{total}}</span>
-                            <span class="count-name">Total Fees Collected</span>
-                        </div>
-                    </div>
-
-                    <div class="col-md-4">
-                        <div class="card-counter info">
-                            <i class="material-icons">school</i>
-                            <span class="count-numbers">{{remaining}}</span>
-                            <span class="count-name">Total Fees Pending</span>
-                        </div>
-                    </div>
-                </div>
-        
                 <div class="row my-5">
-                    <h3 class="fs-4 mb-3">STUDENTS TABLE</h3>
+                    <h3 class="fs-4 mb-3">STUDENT</h3>
                     <div class="col">
                         <div class="table-responsive">
-                            <div class="mb-4 d-flex align-items-center justify-content-between">
-                                <div class="input-group" style="max-width: 400px;">
-                                    <form  method="post">
-                                        {% csrf_token %}
-                                        <input type="text" class="form-control" id="searchQuery" name="studentname" placeholder="Enter student name">
-                                        <button type="submit" class="btn btn-primary" id="searchButton">Search</button>
-                                    </form>
-                                </div>
-                            </div>
                             <table class="table bg-white rounded shadow-sm table-hover">
                                 <thead>
                                     <tr>
@@ -292,33 +232,54 @@
                                         <th>CLASS</th>
                                         <th>ROLL NUMBER</th>
                                         <th>EMAIL</th>
-                                        <th>ACTIONS</th>
-                                      </tr>
+                                    </tr>
                                 </thead>
                                 <tbody>
-                                    {% for x in datas %}
                                     <tr>
-                                      <td data-label="Name">{{x.student_id}}</td>
-                                      <td data-label="Age">{{x.first_name}}</td>
-                                      <td data-label="Grade">{{x.second_name}}</td>
-                                      <td data-label="Subject">{{x.class_name}}</td>
-                                      <td data-label="Subject">{{x.roll_number}}</td>
-                                      <td data-label="Subject">{{x.email}}</td>
-                                      <td>
-                                        <button class="btn edit"><a href="edit/{{x.student_id}}">Edit</button>
-                                        <button class="btn delete"><a href="delete/{{x.student_id}}">Delete</a></button>
-                                        <button class="btn view"><a href="viewstudent/{{x.student_id}}">View Student</button>
-                                    </td>
+                                        <td data-label="Name">{{data.student_id}}</td>
+                                        <td data-label="Age">{{data.first_name}}</td>
+                                        <td data-label="Grade">{{data.second_name}}</td>
+                                        <td data-label="Subject">{{data.class_name}}</td>
+                                        <td data-label="Subject">{{data.roll_number}}</td>
+                                        <td data-label="Subject">{{data.email}}</td>
                                     </tr>
-                                    {% endfor %}
                                 </tbody>
                             </table>
+                            <br>
+                            <br>
+                            <div class="row my-5">
+                                <h3 class="fs-4 mb-3">STUDENT FEES HISTORY</h3>
+                                <div class="col">
+                                    <div class="table-responsive">
+                                        <table class="table bg-white rounded shadow-sm table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">FEE CATEGORY</th>
+                                                    <th scope="col">STATUS</th>
+                                                    <th scope="col">DUE DATE</th>
+                                                    <th scope="col">AMOUNT PAID</th>
+                                                    <th scope="col">AMOUNT DUE</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for x in feesdata %}
+                                                <tr>
+                                                    <td>{{x.fee_category.fee_name}}</td>
+                                                    <td>{{x.status}}</td>
+                                                    <td>{{x.due_date}}</td>
+                                                    <td>{{x.amount_paid}}</td>
+                                                    <td>{{x.remaining_amount}}</td>
+                                                </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+            
                         </div>
                     </div>
                 </div>
-
-
-   <!-- end edit section -->
 
             </div>
         </div>
